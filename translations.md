@@ -1,6 +1,7 @@
-# Translations
+# Các bảng dịch
 
 - [简体中文](https://fomalhauthmj.github.io/patterns/)
+- [Vietnamese](https://github.com/NoahJinnn/patterns)
 
-If you want to add a translation, please open an issue in the
+Nếu muốn thêm bảng dịch của mình, bạn có thể tạo issue tại
 [main repository](https://github.com/rust-unofficial/patterns).
