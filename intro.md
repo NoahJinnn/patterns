@@ -15,7 +15,7 @@ ra các quy chuẩn có thể áp dụng cho nhiều trường hợp.
 Design patterns là tập hợp các giải pháp mang tính tái sử dụng và đã được kiểm nghiệm cho 
 các vấn đề hay lặp lại trong xây dựng và phát triển phần mềm. Chúng giúp phần mềm trở nên 
 chuẩn hóa, đồng thời dễ bảo trì và mở rộng hơn. Ngoài ra, những khuôn mẫu này còn là ngôn ngữ 
-chung của các lập trình viên, chúng là công cụ hoàn hảo để giao tiếptmộ0 cách hiệu quả khi 
+chung của các developer, chúng là công cụ hoàn hảo để giao tiếp một cách hiệu quả khi 
 cùng giải quyết vấn đề trong team.
 
 ## Design patterns trong Rust

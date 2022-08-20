@@ -1,33 +1,28 @@
-# Use borrowed types for arguments
+# Sử dụng borrowed types cho đối số
 
-## Description
+## Mô tả
 
-Using a target of a deref coercion can increase the flexibility of your code
-when you are deciding which argument type to use for a function argument.
-In this way, the function will accept more input types.
+Sử dụng tính chất ép kiểu tham chiếu ngược của Rust để làm tăng độ linh hoạt cho code khi bạn 
+đang lựa chọn kiểu cho đối số của hàm. Sử dụng cách này sẽ giúp hàm chấp nhận nhiều kiểu 
+có thể truyền vào hơn.
 
-This is not limited to slice-able or fat pointer types.
-In fact, you should always prefer using the __borrowed type__ over
-__borrowing the owned type__.
-Such as `&str` over `&String`, `&[T]` over `&Vec<T>`, or `&T` over `&Box<T>`.
+Điều này cũng không giới hạn với các kiểu slice-able hay fat pointer. Thực tế thì chúng ta 
+nên ưu tiên sử dụng các kiểu được mượn hơn là các kiểu đang mượn chính nó. 
+Ví dụ như, `&str` thay vì `&String`, `&[T]` thay vì `&Vec<T>`, hoặc `&T` thay vì `&Box<T>`. 
 
-Using borrowed types you can avoid layers of indirection for those instances
-where the owned type already provides a layer of indirection. For instance, a
-`String` has a layer of indirection, so a `&String` will have two layers of
-indirection. We can avoid this by using `&str` instead, and letting `&String`
-coerce to a `&str` whenever the function is invoked.
+Sử dụng các kiểu được mượn giúp bạn tránh được các lớp tham chiếu không mong muốn của các 
+bản thân các kiểu này. Ví dụ kiểu `String` sẽ có lớp tham chiếu tới giá trị của nó, 
+vậy nên `&String` sẽ có 2 lớp tham chiếu. Chúng ta có thể tránh điều này bằng các sử dụng `&str`, và để cho 
+tham số kiểu `&String` được ép kiểu về `&str` khi gọi hàm.
+## Ví dụ
 
-## Example
+Trong ví dụ này, chúng ta sẽ thể hiện sự khác biệt trong việc sử dụng `&String` và `&str` để làm đối số của hàm.
+Ý tưởng cũng được áp dụng tương tự cho trường hợp `&Vec<T>` với `&[T]` hay là `&Box<T>` với `&T`.
 
-For this example, we will illustrate some differences for using `&String` as a
-function argument versus using a `&str`, but the ideas apply as well to using
-`&Vec<T>` versus using a `&[T]` or using a `&Box<T>` versus a `&T`.
+Đoạn code ví dụ sẽ thực thi việc xác định xem 1 từ có chứa 3 nguyên âm liên tiếp hay không.
+Chúng ta không cần sở hữu chuỗi ký tự đầu vào, nên chúng ta sẽ nhận vào tham chiếu của nó. 
 
-Consider an example where we wish to determine if a word contains three
-consecutive vowels. We don't need to own the string to determine this, so we
-will take a reference.
-
-The code might look something like this:
+Đoạn code như sau:
 
 ```rust
 fn three_vowels(word: &String) -> bool {
@@ -59,36 +54,34 @@ fn main() {
 }
 ```
 
-This works fine because we are passing a `&String` type as a parameter.
-If we remove the comments on the last two lines, the example will fail. This
-is because a `&str` type will not coerce to a `&String` type. We can fix this
-by simply modifying the type for our argument.
+Cách viết này vẫn ổn bởi vì chúng ta truyền vào tham số kiểu `&String`. Nếu ta bỏ
+comments 2 dòng cuối, đoạn code sẽ fail. Điều này bởi vì kiểu `&str` sẽ không được ép về
+kiểu `&String`. Ta có thể sửa điều này dễ dàng bằng cách đổi kiểu của đối số đầu vào. 
 
-For instance, if we change our function declaration to:
+Ví dụ nếu chúng ta đổi khai báo của hàm sang:  
 
 ```rust, ignore
 fn three_vowels(word: &str) -> bool {
 ```
 
-then both versions will compile and print the same output.
+thì cả 2 phiên bản code đều được biên dịch và in ra cùng kết quả.
 
 ```bash
 Ferris: false
 Curious: true
 ```
 
-But wait, that's not all! There is more to this story.
-It's likely that you may say to yourself: that doesn't matter, I will never be
-using a `&'static str` as an input anyways (as we did when we used `"Ferris"`).
-Even ignoring this special example, you may still find that using `&str` will
-give you more flexibility than using a `&String`.
+Nhưng đó không phải là tất cả! Có nhiều điều để bàn luận trong câu chuyện này.
+Có lẽ bạn sẽ nói với bản thân rằng: chẳng vấn đề gì cả, tôi chỉ cần không bao giờ
+dùng kiểu `&'static str` cho tham số đầu vào (như cách chúng ta dùng `"Ferris"`).
+Kể cả khi bỏ qua ví dụ này, bạn vẫn sẽ thấy việc sử dụng `&str` giúp cho code của bạn
+linh hoạt hơn là dùng `&String`.
 
-Let's now take an example where someone gives us a sentence, and we want to
-determine if any of the words in the sentence contain three consecutive vowels.
-We probably should make use of the function we have already defined and simply
-feed in each word from the sentence.
+Hãy cùng lấy 1 ví dụ mà đầu vào là 1 câu văn, và ta muốn xác định xem liệu các từ trong
+đoạn văn này có chứa 3 nguyên âm liên tiếp không. Chúng ta chắc chắn muốn sẽ dụng lại hàm
+trên và đơn giản lặp qua các từ trong đoạn văn, sau đó gọi hàm để kiểm tra.
 
-An example of this could look like this:
+Đoạn code như sau:
 
 ```rust
 fn three_vowels(word: &str) -> bool {
@@ -118,21 +111,21 @@ fn main() {
 }
 ```
 
-Running this example using our function declared with an argument type `&str`
-will yield
+Chạy đoạn code trên với hàm được khai báo đối số đầu vào kiểu `&str`
+sẽ in ra
 
 ```bash
 curious has three consecutive vowels!
 ```
 
-However, this example will not run when our function is declared with an
-argument type `&String`. This is because string slices are a `&str` and not a
-`&String` which would require an allocation to be converted to `&String` which
-is not implicit, whereas converting from `String` to `&str` is cheap and implicit.
+Đoạn code này sẽ không chạy nếu hàm của chúng ta được khai báo với đối số đầu vào kiểu `&String`. 
+Bởi vì những đoạn kí tự sẽ có kiểu `&str` chứ không phải kiểu `&String` 
+và nó sẽ cần biến đầu vào có kiểu `&String`, việc chuyển đổi này không được thực hiện tự động,
+trong khi việc ép kiểu từ `String` sang `&str` thì ít tốn tài nguyên và tự động.
 
-## See also
+## Các nguồn tham khảo
 
 - [Rust Language Reference on Type Coercions](https://doc.rust-lang.org/reference/type-coercions.html)
-- For more discussion on how to handle `String` and `&str` see
-  [this blog series (2015)](https://web.archive.org/web/20201112023149/https://hermanradtke.com/2015/05/03/string-vs-str-in-rust-functions.html)
+- Để hiểu sâu hơn về `String` và `&str`, hãy xem qua
+  [chuỗi bài viết này (2015)](https://web.archive.org/web/20201112023149/https://hermanradtke.com/2015/05/03/string-vs-str-in-rust-functions.html)
   by Herman J. Radtke III

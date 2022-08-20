@@ -1,18 +1,16 @@
 # Idioms
 
-[Idioms](https://en.wikipedia.org/wiki/Programming_idiom) are commonly used
-styles, guidelines and patterns largely agreed upon by a community.
-Writing idiomatic code allows other developers to understand better what is
-happening.
+[Idioms](https://en.wikipedia.org/wiki/Programming_idiom) là các kiểu mẫu, hướng dẫn và khuôn mẫu thông dụng 
+được đại đa số trong cộng đồng đồng thuận.
+Sử dụng idiomatic code giúp các developer khác hiểu rõ hơn nội dung code của bạn.
 
-After all, the computer only cares about the machine code that is generated
-by the compiler.
-Instead, the source code is mainly beneficial to the developer.
-So, since we have this abstraction layer, why not make it more readable?
+Sau cùng thì máy tính chỉ quan tâm về mã máy được tạo ra bởi trình biên dịch. 
+Còn source code mới là mối quan tâm chính của developer. 
+Vậy tại sao chúng ta không làm cho lớp trừu tượng giữa developer và máy tính mang tên source code này dễ đọc hơn?
 
-Remember the [KISS principle](https://en.wikipedia.org/wiki/KISS_principle):
-"Keep It Simple, Stupid". It claims that "most systems work best if they are
-kept simple rather than made complicated; therefore, simplicity should be a key
-goal in design, and unnecessary complexity should be avoided".
+Hãy ghi nhớ nguyên tắc [KISS](https://en.wikipedia.org/wiki/KISS_principle):
+"Keep It Simple, Stupid". Nó tuyên bố rằng "hầu hết các hệ thống hoạt động tốt nhất trong trạng thái đơn giản hơn 
+là phức tạp; do vậy, sự đơn giản là chìa khóa của thiết kế, và phải luôn tránh các sự phức tạp không cần thiết.
 
-> Code is there for humans, not computers, to understand.
+
+> Code là để cho người hiểu, không phải máy tính.
